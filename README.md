@@ -9,13 +9,13 @@
 
 ## Status 状态
 
-- `v0.1.0` — skeleton released, modules under active development
+- `v0.2.0` — collect supports YouTube and Bilibili; used end-to-end to build the KINE-EXP-001 dataset
 - Roadmap: event mining (碰撞/掉落/倾倒检测) → dedup → caption hooks
 
 ## Install 安装
 
 ```bash
-git clone https://github.com/kineworld/kine-datapipe.git
+git clone https://github.com/zoahdev/kine-datapipe.git
 cd kine-datapipe
 pip install -r requirements.txt
 # ffmpeg must be on PATH: https://ffmpeg.org/download.html
@@ -26,6 +26,8 @@ pip install -r requirements.txt
 ```bash
 # 1. Collect videos from a keyword search (uses yt-dlp)
 python -m kineworld_datapipe collect --query "robot arm pick and place" --max 20 --out data/raw
+# 网络不通 YouTube 时，用 B 站源（自动处理 cookie 与 UA）：
+python -m kineworld_datapipe collect --query "机械臂 抓取" --max 20 --out data/raw --source bilibili
 
 # 2. Split into clips at scene cuts
 python -m kineworld_datapipe segment --in data/raw --out data/clips --min-len 2.0 --max-len 10.0
