@@ -12,6 +12,7 @@ def main() -> None:
     p_collect.add_argument("--query", required=True)
     p_collect.add_argument("--max", type=int, default=10)
     p_collect.add_argument("--out", required=True)
+    p_collect.add_argument("--source", choices=["youtube", "bilibili"], default="youtube")
 
     p_segment = sub.add_parser("segment", help="split videos into scene clips")
     p_segment.add_argument("--in", dest="inp", required=True)
@@ -26,7 +27,7 @@ def main() -> None:
 
     args = parser.parse_args()
     if args.cmd == "collect":
-        collect.run(args.query, args.max, args.out)
+        collect.run(args.query, args.max, args.out, source=args.source)
     elif args.cmd == "segment":
         segment.run(args.inp, args.out, args.min_len, args.max_len)
     elif args.cmd == "filter":
