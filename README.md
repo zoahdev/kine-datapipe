@@ -9,8 +9,8 @@
 
 ## Status 状态
 
-- `v0.2.0` — collect supports YouTube and Bilibili; used end-to-end to build the KINE-EXP-001 dataset
-- Roadmap: event mining (碰撞/掉落/倾倒检测) → dedup → caption hooks
+- `v0.3.0` — event mining shipped: motion-spike detection surfaces collision/drop/toppling candidates
+- Roadmap: dedup → caption hooks
 
 ## Install 安装
 
@@ -34,6 +34,9 @@ python -m kineworld_datapipe segment --in data/raw --out data/clips --min-len 2.
 
 # 3. Filter out static/low-motion clips (keep physically interesting footage)
 python -m kineworld_datapipe filter --in data/clips --out data/curated --min-motion 0.35
+
+# 4. Mine physical-event candidates (motion spikes: collisions / drops / topplings)
+python -m kineworld_datapipe events --in data/curated --out data/events.json --z 3.0
 ```
 
 ## Why this matters 为什么重要
@@ -43,7 +46,7 @@ World models for embodied AI are starved of interaction data. Teleoperated robot
 具身智能的世界模型面临"数据荒"：真实机器人遥操作数据的采集成本比互联网视频高出数个数量级。这条管线的目标是把免费视频转化为结构化的预训练数据。
 
 ```
-internet video → scene clips → motion-filtered clips → (v0.2) physical-event mining → world-model pretraining
+internet video → scene clips → motion-filtered clips → physical-event mining → world-model pretraining
 ```
 
 ## Reproducibility promise 可复现承诺
