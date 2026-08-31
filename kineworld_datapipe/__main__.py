@@ -32,6 +32,8 @@ def main() -> None:
     p_pairs.add_argument("--out", required=True)
     p_pairs.add_argument("--n", type=int, default=200)
     p_pairs.add_argument("--events", default=None)
+    p_pairs.add_argument("--length", type=int, default=16)
+    p_pairs.add_argument("--z", type=float, default=3.0)
 
     args = parser.parse_args()
     if args.cmd == "collect":
@@ -48,7 +50,11 @@ def main() -> None:
         events.run(args.inp, args.out, args.z)
     elif args.cmd == "pairs":
         from . import pairs
-        pairs.run(args.out, n_synthetic=args.n, events=args.events)
+        from pathlib import Path
+        extra_kwargs = {}
+        if args.events:
+            extra_kwargs["events"] = args.events
+        pairs.run(args.out, n_synthetic=args.n, events=args.events, length=args.length)
 
 
 if __name__ == "__main__":
