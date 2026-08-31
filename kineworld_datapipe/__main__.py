@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from . import collect, segment, filter, events
+from . import collect, segment, filter, events, pairs
 
 
 def main() -> None:
@@ -30,6 +30,11 @@ def main() -> None:
     p_events.add_argument("--out", required=True)
     p_events.add_argument("--z", type=float, default=3.0)
 
+    p_pairs = sub.add_parser("pairs", help="write intervention pair catalog")
+    p_pairs.add_argument("--out", required=True)
+    p_pairs.add_argument("--n", type=int, default=200)
+    p_pairs.add_argument("--events", default=None)
+
     args = parser.parse_args()
     if args.cmd == "collect":
         collect.run(args.query, args.max, args.out, source=args.source)
@@ -39,6 +44,8 @@ def main() -> None:
         filter.run(args.inp, args.out, args.min_motion)
     elif args.cmd == "events":
         events.run(args.inp, args.out, args.z)
+    elif args.cmd == "pairs":
+        pairs.run(args.out, n_synthetic=args.n, events=args.events)
 
 
 if __name__ == "__main__":
