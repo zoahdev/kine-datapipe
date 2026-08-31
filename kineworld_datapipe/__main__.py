@@ -1,8 +1,6 @@
 import argparse
 import sys
 
-from . import collect, segment, filter, events, pairs
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="kineworld_datapipe", description="KINE-DataPipe CLI")
@@ -37,14 +35,19 @@ def main() -> None:
 
     args = parser.parse_args()
     if args.cmd == "collect":
+        from . import collect
         collect.run(args.query, args.max, args.out, source=args.source)
     elif args.cmd == "segment":
+        from . import segment
         segment.run(args.inp, args.out, args.min_len, args.max_len)
     elif args.cmd == "filter":
-        filter.run(args.inp, args.out, args.min_motion)
+        from . import filter as filt
+        filt.run(args.inp, args.out, args.min_motion)
     elif args.cmd == "events":
+        from . import events
         events.run(args.inp, args.out, args.z)
     elif args.cmd == "pairs":
+        from . import pairs
         pairs.run(args.out, n_synthetic=args.n, events=args.events)
 
 
